@@ -3,3 +3,4 @@
 
 def test_cria_produto():
     pass  # Seu teste deve ser escrito aqui
+    assert 'alteração para commitar'
