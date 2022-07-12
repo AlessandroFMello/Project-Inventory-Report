@@ -1,5 +1,6 @@
 from csv import reader
 from json import load
+from xmltodict import parse
 from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 
@@ -19,6 +20,16 @@ class Inventory:
 
         return json_file_data
 
+    def xml_reader(path):
+        with open(path, 'r', encoding='utf-8') as file:
+            xml_file = file.read()
+
+            parsed_xml = parse(xml_file)
+
+            xml_file_data = parsed_xml['dataset']['record']
+
+        return xml_file_data
+
     def report_generator(data, type):
         if type == 'simples':
             return SimpleReport.generate(data)
@@ -33,6 +44,8 @@ class Inventory:
             data_file = cls.csv_reader(path)
         elif path.endswith("json"):
             data_file = cls.json_reader(path)
+        elif path.endswith("xml"):
+            data_file = cls.xml_reader(path)
         else:
             raise ValueError('Unable to read selected file')
 
